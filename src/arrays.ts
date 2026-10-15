@@ -88,8 +88,10 @@ export function awaitingGrades(): string[] {
  * the error the compiler gives you.
  */
 export function formatterFor(style: 'short' | 'long'): (student: Student) => string {
-  // TODO
-  throw new Error('not implemented');
+  return (student) =>
+    style === 'short'
+      ? student.name
+      : `${student.name} (${student.deptName}), ${student.totCred} credits`;
 }
 
 // --- A5. Changing nothing -------------------------------------------------
@@ -100,6 +102,9 @@ export function formatterFor(style: 'short' | 'long'): (student: Student) => str
  * at all: build new objects with the three dots.
  */
 export function raiseCredits(list: Student[], deptName: string, extra: number): Student[] {
-  // TODO
-  throw new Error('not implemented');
+  return list.map((student) =>
+    student.deptName === deptName
+      ? { ...student, totCred: student.totCred + extra }
+      : student
+  );
 }
