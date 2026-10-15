@@ -45,11 +45,16 @@ export function gradeReport(studentId: string): string {
  *     averageGrade('00128')   // 11  (12 and 10)
  */
 export function averageGrade(studentId: string): number {
-  return enrolments
-    .filter(e => e.studentId === studentId && e.grade !== null)
-    .map(e => parseInt(e.grade!))
-    .reduce((sum, grade) => sum + grade, 0) /
-    enrolments.filter(e => e.studentId === studentId && e.grade !== null).length || 0;
+  const grades = enrolments
+    .filter((enrolment) => enrolment.studentId === studentId && enrolment.grade !== null)
+    .map((enrolment) => Number(enrolment.grade));
+
+  if (grades.length === 0) {
+    return 0;
+  }
+
+  const average = grades.reduce((sum, grade) => sum + grade, 0) / grades.length;
+  return Math.round(average * 10) / 10;
 }
 
 // --- A3. Who is missing a grade ------------------------------------------
@@ -59,11 +64,14 @@ export function averageGrade(studentId: string): number {
  * sorted alphabetically and without repeats.
  */
 export function awaitingGrades(): string[] {
-  return enrolments
-    .filter(e => e.grade === null)
-    .map(e => students.find(s => s.id === e.studentId)!.name)
-    .filter((name, index, self) => self.indexOf(name) === index)
-    .sort();
+  return students
+  .filter((student) =>
+    enrolments.some(
+      (enrolment) => enrolment.studentId === student.id && enrolment.grade === null
+    )
+  )
+  .map((student) => student.name)
+  .sort();
 }
 
 // --- A4. A family of formatters ------------------------------------------
@@ -78,11 +86,10 @@ export function awaitingGrades(): string[] {
  * the error the compiler gives you.
  */
 export function formatterFor(style: 'short' | 'long'): (student: Student) => string {
-  if (style === 'short') {
-    return student => student.name;
-  }
-
-  return student => `${student.name} (${student.deptName}), ${student.totCred} credits`;
+  return (student) =>
+    style === 'short'
+      ? student.name
+      : `${student.name} (${student.deptName}), ${student.totCred} credits`;
 }
 
 // --- A5. Changing nothing -------------------------------------------------
