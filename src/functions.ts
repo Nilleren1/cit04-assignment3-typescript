@@ -18,8 +18,7 @@ export type Test = (student: Student) => boolean;
  * One line is enough, once you see what has to be returned.
  */
 export function not(test: Test): Test {
-  // TODO
-  throw new Error('not implemented');
+  return (student) => !test(student);
 }
 
 // --- B2. One pass, two answers -------------------------------------------
@@ -54,8 +53,9 @@ export function partition(list: Student[], test: Test): [Student[], Student[]] {
  * Be ready to say where the saved number lives after once has returned.
  */
 export function once(calculation: () => number): () => number {
-  // TODO
-  throw new Error('not implemented');
+  let result: number | undefined;
+
+  return () => (result ??= calculation()); //assign value on the right if left value is null | undefined
 }
 
 // --- B4. All of them ------------------------------------------------------
