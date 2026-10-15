@@ -24,14 +24,12 @@ import { Student, Enrolment, students, courses, enrolments } from './data.js';
  */
 export function gradeReport(studentId: string): string {
   return enrolments
-    .filter((enrolment) => enrolment.studentId === studentId)
-    // map function returns a string for each enrolment, using the course title and the grade (or "not awarded" if the grade is null)
-    .map((enrolment) => {
-      const course = courses.find((course) => course.courseId === enrolment.courseId);
-      const grade = enrolment.grade === null ? 'not awarded' : enrolment.grade;
-      return `${course?.courseId} ${course?.title}: ${grade}`;
+    .filter(e => e.studentId === studentId)
+    .map(e => {
+      const course = courses.find(c => c.courseId === e.courseId)!;
+      return `${course.courseId} ${course.title}: ${e.grade ?? 'not awarded'}`;
     })
-    .join('\n'); // join the strings with a newline character
+    .join('\n');
 }
 
 // --- A2. Averaging --------------------------------------------------------
@@ -102,9 +100,9 @@ export function formatterFor(style: 'short' | 'long'): (student: Student) => str
  * at all: build new objects with the three dots.
  */
 export function raiseCredits(list: Student[], deptName: string, extra: number): Student[] {
-  return list.map((student) =>
+  return list.map(student =>
     student.deptName === deptName
       ? { ...student, totCred: student.totCred + extra }
-      : student
+      : { ...student }
   );
 }

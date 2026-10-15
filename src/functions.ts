@@ -75,8 +75,7 @@ export function once(calculation: () => number): () => number {
  * With no tests at all, everything passes: there is nothing to fail.
  */
 export function allOf(...tests: Test[]): Test {
-  // TODO
-  throw new Error('not implemented');
+  return student => tests.every(test => test(student));
 }
 
 // Two small helpers to build tests with, given to you.
