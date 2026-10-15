@@ -106,3 +106,4 @@ export function raiseCredits(list: Student[], deptName: string, extra: number): 
       : { ...student }
   );
 }
+ 
