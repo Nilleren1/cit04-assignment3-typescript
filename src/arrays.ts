@@ -23,8 +23,15 @@ import { Student, Enrolment, students, courses, enrolments } from './data.js';
  * join. No for loops in this file.
  */
 export function gradeReport(studentId: string): string {
-  // TODO
-  throw new Error('not implemented');
+  return enrolments
+    .filter((enrolment) => enrolment.studentId === studentId)
+    // map function returns a string for each enrolment, using the course title and the grade (or "not awarded" if the grade is null)
+    .map((enrolment) => {
+      const course = courses.find((course) => course.courseId === enrolment.courseId);
+      const grade = enrolment.grade === null ? 'not awarded' : enrolment.grade;
+      return `${course?.courseId} ${course?.title}: ${grade}`;
+    })
+    .join('\n'); // join the strings with a newline character
 }
 
 // --- A2. Averaging --------------------------------------------------------
@@ -40,8 +47,16 @@ export function gradeReport(studentId: string): string {
  *     averageGrade('00128')   // 11  (12 and 10)
  */
 export function averageGrade(studentId: string): number {
-  // TODO
-  throw new Error('not implemented');
+  const grades = enrolments
+    .filter((enrolment) => enrolment.studentId === studentId && enrolment.grade !== null)
+    .map((enrolment) => Number(enrolment.grade));
+
+  if (grades.length === 0) {
+    return 0;
+  }
+
+  const average = grades.reduce((sum, grade) => sum + grade, 0) / grades.length;
+  return Math.round(average * 10) / 10;
 }
 
 // --- A3. Who is missing a grade ------------------------------------------
@@ -51,8 +66,14 @@ export function averageGrade(studentId: string): number {
  * sorted alphabetically and without repeats.
  */
 export function awaitingGrades(): string[] {
-  // TODO
-  throw new Error('not implemented');
+  return students
+  .filter((student) =>
+    enrolments.some(
+      (enrolment) => enrolment.studentId === student.id && enrolment.grade === null
+    )
+  )
+  .map((student) => student.name)
+  .sort();
 }
 
 // --- A4. A family of formatters ------------------------------------------
