@@ -33,13 +33,8 @@ export function not(test: Test): Test {
  * caller can take them apart by position.
  */
 export function partition(list: Student[], test: Test): [Student[], Student[]] {
-  return list.reduce<[Student[], Student[]]>(
-    ([passing, failing], student) => {
-      (test(student) ? passing : failing).push(student);
-      return [passing, failing];
-    },
-    [[], []]
-  );
+  // TODO
+  throw new Error('not implemented');
 }
 
 // --- B3. Do it once -------------------------------------------------------
@@ -75,7 +70,8 @@ export function once(calculation: () => number): () => number {
  * With no tests at all, everything passes: there is nothing to fail.
  */
 export function allOf(...tests: Test[]): Test {
-  return student => tests.every(test => test(student));
+  // TODO
+  throw new Error('not implemented');
 }
 
 // Two small helpers to build tests with, given to you.
