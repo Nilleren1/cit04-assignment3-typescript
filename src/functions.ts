@@ -18,8 +18,7 @@ export type Test = (student: Student) => boolean;
  * One line is enough, once you see what has to be returned.
  */
 export function not(test: Test): Test {
-  // TODO
-  throw new Error('not implemented');
+  return value => !test(value);
 }
 
 // --- B2. One pass, two answers -------------------------------------------
@@ -34,8 +33,13 @@ export function not(test: Test): Test {
  * caller can take them apart by position.
  */
 export function partition(list: Student[], test: Test): [Student[], Student[]] {
-  // TODO
-  throw new Error('not implemented');
+  return list.reduce<[Student[], Student[]]>(
+    ([passing, failing], student) => {
+      (test(student) ? passing : failing).push(student);
+      return [passing, failing];
+    },
+    [[], []]
+  );
 }
 
 // --- B3. Do it once -------------------------------------------------------
@@ -54,8 +58,15 @@ export function partition(list: Student[], test: Test): [Student[], Student[]] {
  * Be ready to say where the saved number lives after once has returned.
  */
 export function once(calculation: () => number): () => number {
-  // TODO
-  throw new Error('not implemented');
+  let result: number | undefined;
+
+  return () => {
+    if (result === undefined) {
+      result = calculation();
+    }
+
+    return result;
+  };
 }
 
 // --- B4. All of them ------------------------------------------------------
@@ -70,8 +81,7 @@ export function once(calculation: () => number): () => number {
  * With no tests at all, everything passes: there is nothing to fail.
  */
 export function allOf(...tests: Test[]): Test {
-  // TODO
-  throw new Error('not implemented');
+  return student => tests.every(test => test(student));
 }
 
 // Two small helpers to build tests with, given to you.
